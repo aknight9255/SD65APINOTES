@@ -21,14 +21,41 @@ namespace IntroToAPI
                 Person personResponse = response.Content.ReadAsAsync<Person>().Result;
                 Console.WriteLine(personResponse.name);
 
-                foreach(string vehicleURL in personResponse.vehicles)
+                foreach (string vehicleURL in personResponse.vehicles)
                 {
                     HttpResponseMessage vehicleResponse = httpClient.GetAsync(vehicleURL).Result;
                     Console.WriteLine(vehicleResponse.Content.ReadAsStringAsync().Result);
                     Vehicle vehicle = vehicleResponse.Content.ReadAsAsync<Vehicle>().Result;
                     Console.WriteLine(vehicle.Name);
-
                 }
+            }
+
+            SWAPIService swapiService = new SWAPIService();
+            for(int i=1; i <= 10;i++)
+            {
+                Person personOne = swapiService.GetPersonAsync($"https://swapi.dev/api/people/{i}").Result;
+
+                if (personOne != null)
+                {
+                    Console.Clear();
+                    Console.WriteLine($"The character that has been entered is: {personOne.name}");
+                    foreach (string vehicleUrl in personOne.vehicles)
+                    {
+                        var vehicle = swapiService.GetVehicleAsync(vehicleUrl).Result;
+                        Console.WriteLine($"They drive a {vehicle.Name}");
+                    }
+                    Console.ReadKey();
+                }
+            }
+
+            var genericResponse = swapiService.GetAsyncGeneric<Vehicle>("https://swapi.dev/api/vehicles/4").Result;
+            Console.WriteLine(genericResponse.CargoCapacity);
+            Console.WriteLine(genericResponse.Name);
+
+            SearchResult<Person> skywalkers = swapiService.GetPersonSearchAsync("skywalker").Result;
+            foreach(Person person in skywalkers.Results)
+            {
+                Console.WriteLine(person.name);
             }
 
         }

@@ -20,7 +20,38 @@ namespace IntroToAPI.Models
                 return person;
             }
             return null;
-            //Come back at 3:10pm
         }
+
+        public async Task<Vehicle> GetVehicleAsync(string url)
+        {
+            HttpResponseMessage response = await _httpClient.GetAsync(url);
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadAsAsync<Vehicle>();
+            }
+            return null;
+
+        }
+
+        public async Task<T> GetAsyncGeneric<T>(string url)
+        {
+            HttpResponseMessage response = await _httpClient.GetAsync(url);
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadAsAsync<T>();
+            }
+            return default;
+        }
+
+        public async Task<SearchResult<Person>> GetPersonSearchAsync(string query)
+        {
+            HttpResponseMessage response = await _httpClient.GetAsync("https://swapi.dev/api/people/?search=" + query);
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadAsAsync<SearchResult<Person>>();
+            }
+            return null;
+        }
+
     }
 }
