@@ -55,8 +55,6 @@ namespace RestaurantRaterAPI.Controllers
                 {
                     foundRestaurant.Name = model.Name;
                     foundRestaurant.Address = model.Address;
-                    foundRestaurant.Rating = model.Rating;
-
                     await _context.SaveChangesAsync();
                     return Ok();
                 }
