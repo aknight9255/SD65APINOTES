@@ -21,5 +21,14 @@ namespace GeneralStoreAPI.Models
         public virtual Customer Customer { get; set; }
         [DataType(DataType.DateTime)]
         public DateTime DateOfTransaction { get; set; }
+
+        //private int myVar;
+
+        //public int MyProperty
+        //{
+        //    get { return myVar; }
+        //    set { myVar = value; }
+        //}
+
     }
 }
