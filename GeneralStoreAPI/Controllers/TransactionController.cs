@@ -50,9 +50,22 @@ namespace GeneralStoreAPI.Controllers
                 {
                     return BadRequest("Transaction ID mismatch");
                 }
-                _context.Entry(model).State = EntityState.Modified;
-                await _context.SaveChangesAsync();
-                return Ok();
+                //_context.Entry(model).State = EntityState.Modified;
+                //await _context.SaveChangesAsync();
+                //return Ok();
+                var foundModel = _context.Transactions.Find(id);
+                if(foundModel != null)
+                {
+                    foundModel.CustomerID = model.CustomerID;
+                    foundModel.ProductID = model.ProductID;
+                    await _context.SaveChangesAsync();
+                    return Ok();
+                }
+                else
+                {
+                    return NotFound();
+                }
+
             }
             return BadRequest(ModelState);
         }
